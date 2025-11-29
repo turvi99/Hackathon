@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Heart Disease Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .dashboard-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 300px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #2f3542;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2f3542;
+            margin: 40px 0;
+            font-size: 32px;
+        }
+        h2 {
+            color: #ff4757;
+            margin: 15px 0;
+            font-size: 24px;
+        }
+        p {
+            color: #747d8c;
+            line-height: 1.6;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 12px 25px;
+            background: #ff4757;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .logout-btn:hover {
+            background: #ff6b81;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,71,87,0.2);
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    <h1>❤️ Heart Disease Prediction System</h1>
+    <div class="dashboard-container">
+        <a href="{{ url_for('details') }}" class="dashboard-card">
+            <div class="icon">ℹ️</div>
+            <h2>Feature Details</h2>
+            <p>Learn about the various risk factors and measurements used in heart disease prediction</p>
+        </a>
+        <a href="{{ url_for('index') }}" class="dashboard-card">
+            <div class="icon">🏥</div>
+            <h2>Risk Prediction</h2>
+            <p>Calculate your heart disease risk using our advanced prediction model</p>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<section style="padding:40px; background:#f9f9f9; font-family:Arial, sans-serif;">
+  <h2 style="text-align:center; margin-bottom:30px;">🩺 Heart Risk Features</h2>
+  <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+    
+    <div class="card">
+      <h3>🎓 Education</h3>
+      <p>Level of education (1=some HS, 2=HS, 3=some college, 4=college+). Higher education often links to healthier lifestyle choices.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚭 Current Smoker</h3>
+      <p>Shows whether the person smokes. Smoking greatly increases heart disease risk. Non-smokers have lower risk.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔥 CigsPerDay</h3>
+      <p>Number of cigarettes smoked per day. Ideally, this should be 0. Even <5/day can harm heart health.</p>
+    </div>
+
+    <div class="card">
+      <h3>💊 BPMeds</h3>
+      <p>On blood pressure medication? Taking it often means a history of high BP — controlling BP is vital.</p>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ PrevalentStroke</h3>
+      <p>Has the person ever had a stroke? Past strokes increase future cardiovascular risk.</p>
+    </div>
+
+    <div class="card">
+      <h3>💢 PrevalentHyp</h3>
+      <p>High blood pressure? Normal: &lt;120/80 mmHg. Hypertension increases heart strain.</p>
+    </div>
+
+    <div class="card">
+      <h3>🍬 Diabetes</h3>
+      <p>Diabetes damages blood vessels. Normal fasting glucose &lt;100 mg/dL reduces risk.</p>
+    </div>
+
+    <div class="card">
+      <h3>🧈 TotChol</h3>
+      <p>Total cholesterol in mg/dL. Healthy: 125–200 mg/dL. Above 240 mg/dL = high risk.</p>
+    </div>
+
+    <div class="card">
+      <h3>❤️ SysBP</h3>
+      <p>Systolic BP (top number). Normal &lt;120, Elevated 120–129, High 130+ mmHg.</p>
+    </div>
+
+    <div class="card">
+      <h3>💤 DiaBP</h3>
+      <p>Diastolic BP (bottom number). Normal &lt;80, High 80–89+ mmHg.</p>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ BMI</h3>
+      <p>Body Mass Index. Healthy: 18.5–24.9. Over 25 = overweight; 30+ = obese.</p>
+    </div>
+
+    <div class="card">
+      <h3>💓 HeartRate</h3>
+      <p>Resting heartbeats per minute. Normal: 60–100 bpm; athletes 50–60 bpm.</p>
+    </div>
+
+    <div class="card">
+      <h3>🍭 Glucose</h3>
+      <p>Blood sugar mg/dL. Normal fasting: 70–99, Prediabetes: 100–125, Diabetes: 126+.</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.card {
+  background:white;
+  border-radius:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  width:250px;
+  padding:20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.05); /* pop-up & slight enlarge */
+  box-shadow:0 10px 20px rgba(0,0,0,0.2);   /* stronger shadow */
+}
+</style>
+
+<!-- Add near the bottom of the page -->
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{{ url_for('dashboard') }}" style="display: inline-block; text-decoration: none; color: white; background: #d32f2f; padding: 10px 20px; border-radius: 5px;">Back to Dashboard</a>
+</div>

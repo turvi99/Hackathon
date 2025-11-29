@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digital Twin – Heart Risk Predictor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      padding: 20px;
+      flex: 1 1 350px;
+      max-width: 500px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    input:focus, select:focus {
+      border-color: #4caf50;
+      outline: none;
+    }
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .risk-meter-container {
+      margin-top: 20px;
+      height: 25px;
+      width: 100%;
+      background: #ddd;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .risk-meter-fill {
+      height: 100%;
+      width: 0;
+      background-color: #4caf50;
+      border-radius: 15px;
+      transition: width 1s ease;
+    }
+    .emoji {
+      font-size: 50px;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .heart-icon {
+      font-size: 70px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .tips {
+      margin-top: 15px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>🩺 Digital Twin – Heart Risk Predictor</h1>
+  <div class="container">
+    
+    <!-- Left: Input Form -->
+    <div class="card">
+      <h2>Enter Your Details</h2>
+      <form action="{{ url_for('predict') }}" method="POST">
+        <label>Male (1 = Yes, 0 = No):</label>
+        <input type="number" name="male" min="0" max="1" required>
+
+        <label>Age:</label>
+        <input type="number" name="age" step="any" required>
+
+        <label>Education (0–3):</label>
+        <input type="number" name="education" min="0" max="3" required>
+
+        <label>Current Smoker (1 = Yes, 0 = No):</label>
+        <input type="number" name="currentSmoker" min="0" max="1" required>
+
+        <label>Cigarettes per Day:</label>
+        <input type="number" name="cigsPerDay" step="any" required>
+
+        <label>Blood Pressure Medications (1 = Yes, 0 = No):</label>
+        <input type="number" name="BPMeds" min="0" max="1" required>
+
+        <label>Prevalent Stroke (1 = Yes, 0 = No):</label>
+        <input type="number" name="prevalentStroke" min="0" max="1" required>
+
+        <label>Prevalent Hypertension (1 = Yes, 0 = No):</label>
+        <input type="number" name="prevalentHyp" min="0" max="1" required>
+
+        <label>Diabetes (1 = Yes, 0 = No):</label>
+        <input type="number" name="diabetes" min="0" max="1" required>
+
+        <label>Total Cholesterol:</label>
+        <input type="number" name="totChol" step="any" required>
+
+        <label>Systolic BP:</label>
+        <input type="number" name="sysBP" step="any" required>
+
+        <label>Diastolic BP:</label>
+        <input type="number" name="diaBP" step="any" required>
+
+        <label>BMI:</label>
+        <input type="number" name="BMI" step="any" required>
+
+        <label>Heart Rate:</label>
+        <input type="number" name="heartRate" step="any" required>
+
+        <label>Glucose:</label>
+        <input type="number" name="glucose" step="any" required>
+
+        <label>Emotion:</label>
+        <select name="emotion" required>
+          <option value="0">😊 Happy</option>
+          <option value="1">😐 Neutral</option>
+          <option value="2">😞 Sad</option>
+          <option value="3">😣 Stressed</option>
+        </select>
+
+        <input type="submit" value="Predict Risk">
+      </form>
+    </div>
+    
+    <!-- Right: Result Card -->
+    <div class="card">
+      {% if prediction_text %}
+        <h2>{{ prediction_text }}</h2>
+        <p style="text-align:center;">{{ result }}</p>
+
+        <!-- Risk Meter -->
+        <div class="risk-meter-container">
+          <div class="risk-meter-fill" id="riskFill"></div>
+        </div>
+
+        <!-- Emoji -->
+        <p class="emoji">
+          {% if adjusted_risk < 0.3 %}
+            😄 Low Risk
+          {% elif adjusted_risk < 0.7 %}
+            😐 Moderate Risk
+          {% else %}
+            ⚠️ High Risk
+          {% endif %}
+        </p>
+
+        <!-- Heart Icon -->
+        <div class="heart-icon" style="color: {% if adjusted_risk < 0.3 %}#4caf50{% elif adjusted_risk < 0.7 %}#ffa500{% else %}#ff4c4c{% endif %};">
+          ❤️
+        </div>
+
+        <!-- Lifestyle Tips -->
+        <div class="tips">
+          {% if adjusted_risk >= 0.7 %}
+            <h3>⚠️ High Risk! Consider:</h3>
+            <ul>
+              <li>Quit smoking.</li>
+              <li>Control cholesterol and glucose levels.</li>
+              <li>Exercise regularly and maintain healthy BMI.</li>
+              <li>Consult a cardiologist for checkups.</li>
+            </ul>
+          {% elif adjusted_risk >= 0.3 %}
+            <h3>⚠️ Moderate Risk</h3>
+            <ul>
+              <li>Maintain balanced diet and active lifestyle.</li>
+              <li>Monitor blood pressure and glucose regularly.</li>
+              <li>Manage stress effectively.</li>
+            </ul>
+          {% else %}
+            <h3>✅ Low Risk</h3>
+            <p>Keep up your healthy lifestyle! 🌱</p>
+          {% endif %}
+        </div>
+
+        <!-- Animate Risk Meter -->
+        <!-- Replace the risk meter script -->
+        <script>
+            const riskFill = document.getElementById('riskFill');
+            const riskPercent = {{ adjusted_risk * 100 }};  // Remove the curly braces
+            riskFill.style.width = riskPercent + '%';
+        
+            if (riskPercent < 30) {
+                riskFill.style.backgroundColor = '#4caf50';
+            } else if (riskPercent < 70) {
+                riskFill.style.backgroundColor = '#ffa500';
+            } else {
+                riskFill.style.backgroundColor = '#ff4c4c';
+            }
+        </script>
+      {% else %}
+        <h2 style="text-align:center;">Your Results Will Appear Here</h2>
+      {% endif %}
+    </div>
+  </div>
+  
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="{{ url_for('dashboard') }}" style="display: inline-block; text-decoration: none; color: white; background: #d32f2f; padding: 10px 20px; border-radius: 5px;">Back to Dashboard</a>
+  </div>
+</body>
+</html>
